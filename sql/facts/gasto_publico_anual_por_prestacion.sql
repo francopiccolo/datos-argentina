@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS fact.gasto_publico;
+DROP TABLE IF EXISTS fact.gasto_publico_anual_por_prestacion;
 
-CREATE TABLE fact.gasto_publico AS (
+CREATE TABLE fact.gasto_publico_anual_por_prestacion AS (
 WITH gasto_ingresos AS (
 SELECT  indice_tiempo, 
         SUM(gasto) AS gasto
@@ -9,8 +9,8 @@ GROUP   BY 1)
 
 , gasto_rest AS (
 SELECT  indice_tiempo, 
-        gasto_publico_total*1000000 - COALESCE(gasto, 0) AS gasto
-FROM    datosgobar.gasto_publico_consolidado
+        gasto_publico - COALESCE(gasto, 0) AS gasto
+FROM    fact.gasto_publico_anual
 LEFT    JOIN gasto_ingresos USING (indice_tiempo)
 )
 
